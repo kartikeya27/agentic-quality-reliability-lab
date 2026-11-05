@@ -239,9 +239,8 @@ Prometheus and Grafana are exposed only on `127.0.0.1` for this demo; Grafana's 
 
 ## Additional docs
 
-- [Complete Mac installation and GitHub publishing](START_HERE_MAC.md)
+- [Complete Mac installation](START_HERE_MAC.md)
 - [Architecture, safety boundaries, QA strategy](docs/ARCHITECTURE.md)
-- [10-minute live demo / interviewer talk track](docs/DEMO_SCRIPT.md)
 - [Bug lifecycle / defect triage example](docs/DEFECT_LIFECYCLE.md)
 - [Role requirement mapping and honest experience boundaries](docs/ROLE_MAPPING.md)
 - [Complete live verification playbook for every integration](docs/COMPLETE_VERIFICATION.md)
