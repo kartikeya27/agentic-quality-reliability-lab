@@ -73,19 +73,4 @@ The core demo does not need these. If you already have the corresponding runtime
 
 The scripts do **not** pretend that unavailable hardware or model services passed. See [complete verification details](docs/COMPLETE_VERIFICATION.md), [requirement traceability](docs/AI_AGENT_REQUIREMENTS.md), and [human measurement protocol](docs/EXPERIMENT_PROTOCOL.md).
 
-## Publish on GitHub
-
-Create an empty repository named `agentic-quality-reliability-lab` and use these commands from the extracted folder:
-
-```bash
-git init
-git branch -M main
-git add .
-git commit -m "Add agent quality and reliability testing platform"
-git remote add origin https://github.com/YOUR_USERNAME/agentic-quality-reliability-lab.git
-git push -u origin main
-```
-
-Replace `YOUR_USERNAME` with your account handle; if the repository already exists locally, inspect `git remote -v` before adding a remote.
-
 **Evidence honesty:** Python and configuration checks can run in any environment, but Docker services, remote CI, actual model runtime, and GPU evidence must be collected where those systems run.
