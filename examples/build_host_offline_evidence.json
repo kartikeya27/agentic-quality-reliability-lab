@@ -1,0 +1,28 @@
+{
+  "provenance": "Executed only in assistant build host, not on the user Mac",
+  "host": {
+    "system": "Linux",
+    "machine": "x86_64",
+    "python": "3.13.5"
+  },
+  "tests_passed": 64,
+  "local_demo_result": "VERIFIED_OFFLINE",
+  "offline_evidence": {
+    "golden_pass_rate": 1.0,
+    "model_used_rate": 0.0,
+    "local_policy_fixtures_passed": true,
+    "synthetic_node_reschedule_passed": true,
+    "traceability_passed": true,
+    "localhost_model_adapter_contract_passed": true
+  },
+  "external_platforms_verified": false,
+  "important_limitations": [
+    "Local dashboard is not Grafana; /metrics is Prometheus exposition, not a Prometheus server.",
+    "Mocked Ollama/NIM HTTP contract tests do not run a model.",
+    "Static rule checks are not execution of NeMo Guardrails SDK.",
+    "Virtual node-loss example is not a KWOK/Kubernetes cluster.",
+    "accelerator GPU requires an actual accelerator GPU host; cannot be emulated as hardware proof.",
+    "GitHub Actions files are included, but remote success requires a pushed repository.",
+    "QA productivity improvement requires real manual versus model-assisted human timing data."
+  ]
+}

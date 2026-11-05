@@ -1,0 +1,44 @@
+name: Agent / QA defect
+description: Report a reproducible functional, reliability, regression or evaluation failure
+labels: [bug, quality]
+body:
+  - type: markdown
+    attributes:
+      value: 'Use synthetic/redacted incidents. Never include credentials, private tickets or production customer content.'
+  - type: dropdown
+    id: area
+    attributes:
+      label: Defect area
+      options: [Agent decision, Tool execution, Inference runtime, Eval dataset, Flaky test, Observability, CI/CD, Other]
+    validations: {required: true}
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: [Critical, High, Medium, Low]
+    validations: {required: true}
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps and sanitized input
+      placeholder: 'Include exact command, synthetic case ID, environment and mode'
+    validations: {required: true}
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior / contract
+    validations: {required: true}
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior / trace / sanitized evidence
+    validations: {required: true}
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment, runtime, model revision, Python, OS and container versions
+  - type: textarea
+    id: verify
+    attributes:
+      label: Regression-test plan and fix verification
+      placeholder: 'What test will fail before and pass after the fix? What risks remain?'

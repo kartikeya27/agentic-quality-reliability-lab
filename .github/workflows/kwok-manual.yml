@@ -1,0 +1,44 @@
+name: KWOK simulated node failure (manual, isolated cluster)
+on:
+  workflow_dispatch:
+    inputs:
+      virtual_nodes:
+        description: 'Fake Kubernetes nodes (2 to 20)'
+        default: '4'
+        required: true
+      virtual_replicas:
+        description: 'Fake Kubernetes pods (2 to 500)'
+        default: '30'
+        required: true
+jobs:
+  fake-node-loss:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python and project
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.32.2
+      - name: Install kwokctl release binary
+        run: |
+          curl -fsSL --retry 3 -o kwokctl https://github.com/kubernetes-sigs/kwok/releases/download/v0.9.0/kwokctl-linux-amd64
+          sudo install -m 0755 kwokctl /usr/local/bin/kwokctl
+          kwokctl --version
+      - name: Run isolated KWOK cluster / node-loss scheduling experiment
+        env:
+          AQ_KWOK_NODES: ${{ inputs.virtual_nodes }}
+          AQ_KWOK_REPLICAS: ${{ inputs.virtual_replicas }}
+        run: bash scripts/kwok_failure_experiment.sh
+      - name: Upload KWOK snapshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwok-failure-evidence
+          path: artifacts/kwok/
+          if-no-files-found: ignore

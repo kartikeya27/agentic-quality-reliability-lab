@@ -1,0 +1,3 @@
+{"id":"SYN-DB-001","message":"Database query failed after release","expected_category":"database","expected_severity":"high","risk":"high","owner":"data-oncall"}
+{"id":"SYN-DEPLOY-002","message":"Production down: Kubernetes deployment rollback needed","expected_category":"deployment","expected_severity":"critical","risk":"critical","owner":"platform-oncall"}
+{"id":"SYN-ID-003","message":"SSO authentication error for all users","expected_category":"identity","expected_severity":"critical","risk":"critical","owner":"identity-oncall"}

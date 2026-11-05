@@ -1,0 +1,434 @@
+{
+  "title": "Agent Quality & Reliability Lab \u2014 Requirement Evidence & Live Metrics",
+  "uid": "agent-quality-lab",
+  "schemaVersion": 39,
+  "version": 3,
+  "refresh": "5s",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "description": "Demo. Missing live runtime evidence is No Data, not success. SLOs reflect a bounded local HTTP test. Bug-cycle is a synthetic red/green fixture, not an actual customer fix.",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Request rate (requests/sec)",
+      "id": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(aq_triage_requests_total[1m]))",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "p95 agent latency (seconds)",
+      "id": 2,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(aq_triage_latency_seconds_bucket[5m])))",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Model fallback events / 5 min",
+      "id": 3,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "targets": [
+        {
+          "expr": "sum(increase(aq_model_fallback_total[5m]))",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Tool failure events / 5 min",
+      "id": 4,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "targets": [
+        {
+          "expr": "sum(increase(aq_tool_failures_total[5m]))",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Golden-set pass rate",
+      "id": 5,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_pass_ratio{suite=\"golden\"}",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Advanced evaluation pass rate",
+      "id": 6,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_pass_ratio{suite=\"advanced\"}",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Flaky tests",
+      "id": 7,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_flaky_tests",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "New regressions",
+      "id": 8,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_regressions",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Risk-tag test coverage (NOT code coverage)",
+      "id": 9,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_selected_tag_coverage_ratio",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Observed run time reduction (NOT AI uplift)",
+      "id": 10,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_observed_time_reduction_ratio",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Local HTTP load p95 (ms)",
+      "id": 11,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_load_p95_milliseconds",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Local HTTP load p99 (ms)",
+      "id": 12,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_load_p99_milliseconds",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "accelerator GPU utilization (%) \u2014 optional DCGM",
+      "id": 13,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "targets": [
+        {
+          "expr": "avg(DCGM_FI_DEV_GPU_UTIL)",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "accelerator GPU memory (MiB) \u2014 optional DCGM",
+      "id": 14,
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "targets": [
+        {
+          "expr": "sum(DCGM_FI_DEV_FB_USED)",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "id": 15,
+      "type": "stat",
+      "title": "Controlled mutation detection (seeded defects; NOT AI uplift)",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_controlled_mutation_detection_ratio",
+          "legendFormat": "{{__name__}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Local HTTP SLO gate (1=pass)",
+      "id": 16,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_local_http_slo_gate",
+          "legendFormat": "Local HTTP SLO gate (1=pass)",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Offline requirement execution gate",
+      "id": 17,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_requirement_offline_gate",
+          "legendFormat": "Offline requirement execution gate",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Synthetic bug red/green verification",
+      "id": 18,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "aq_qa_synthetic_bug_fix_gate",
+          "legendFormat": "Synthetic bug red/green verification",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 1
+        }
+      }
+    }
+  ]
+}

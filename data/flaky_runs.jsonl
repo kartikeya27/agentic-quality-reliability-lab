@@ -1,0 +1,10 @@
+{"test_id":"test_login","run":1,"passed":true}
+{"test_id":"test_login","run":2,"passed":false}
+{"test_id":"test_login","run":3,"passed":true}
+{"test_id":"test_database","run":1,"passed":true}
+{"test_id":"test_database","run":2,"passed":true}
+{"test_id":"test_database","run":3,"passed":true}
+{"test_id":"test_deploy","run":1,"passed":false}
+{"test_id":"test_deploy","run":2,"passed":false}
+{"test_id":"test_deploy","run":3,"passed":false}
+{"test_id":"test_network","run":1,"passed":true}

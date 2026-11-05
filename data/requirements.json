@@ -1,0 +1,148 @@
+[
+  {
+    "id": "NVD-01",
+    "requirement": "AI-assisted test case generation",
+    "test_refs": [
+      "tests/test_quality_tooling.py::test_generated_metamorphic_cases"
+    ],
+    "optional_verification": "Live Ollama/NIM AI case proposals require human review"
+  },
+  {
+    "id": "NVD-02",
+    "requirement": "Defect detection and regression testing",
+    "test_refs": [
+      "tests/test_runtime_verification.py::test_mutation_benchmark_detects_controlled_faults",
+      "tests/test_quality_tooling.py::test_comparison_detects_new_regression"
+    ]
+  },
+  {
+    "id": "NVD-03",
+    "requirement": "Flaky test analysis",
+    "test_refs": [
+      "tests/test_quality_tooling.py::test_flaky_vs_stable_failure"
+    ]
+  },
+  {
+    "id": "NVD-04",
+    "requirement": "Risk and coverage optimization",
+    "test_refs": [
+      "tests/test_quality_tooling.py::test_coverage_selector_and_budget"
+    ]
+  },
+  {
+    "id": "NVD-05",
+    "requirement": "Agent/tool harness and functional tests",
+    "test_refs": [
+      "tests/test_agent.py::test_local_tool_chain",
+      "tests/test_api.py::test_valid_triage_and_tool_trace"
+    ]
+  },
+  {
+    "id": "NVD-06",
+    "requirement": "Inference runtime/model output contract",
+    "test_refs": [
+      "tests/test_inference_adapter.py::test_ollama_chat_protocol",
+      "tests/test_nim_nemo_contracts.py::test_nim_uses_configured_openai_protocol"
+    ],
+    "optional_verification": "Live Ollama/NIM service required"
+  },
+  {
+    "id": "NVD-07",
+    "requirement": "Fault injection, reliable fallback, end-to-end degradation",
+    "test_refs": [
+      "tests/test_agent.py::test_safe_tool_degradation",
+      "tests/test_advanced_extensions.py::test_inference_chaos_offline"
+    ]
+  },
+  {
+    "id": "NVD-08",
+    "requirement": "Advanced agent safety, prompt injection, consistency, grounding",
+    "test_refs": [
+      "tests/test_advanced_extensions.py::test_advanced_offline_checks"
+    ]
+  },
+  {
+    "id": "NVD-09",
+    "requirement": "Performance and explicit latency/error SLO gates",
+    "test_refs": [
+      "tests/test_slo_reproduction_traceability.py::test_slo_gate_accepts_realistic_report",
+      "tests/test_slo_reproduction_traceability.py::test_slo_gate_rejects_slow_or_invalid_report"
+    ]
+  },
+  {
+    "id": "NVD-10",
+    "requirement": "Testing observability metrics and dashboard contract",
+    "test_refs": [
+      "tests/test_api.py::test_metrics_exposed_without_message_labels",
+      "tests/test_runtime_verification.py::test_prometheus_grafana_stack_http_check_with_mock"
+    ],
+    "optional_verification": "Actual Prometheus/Grafana container runtime required"
+  },
+  {
+    "id": "NVD-11",
+    "requirement": "Containerized application and Kubernetes resilience",
+    "test_refs": [
+      "tests/test_slo_reproduction_traceability.py::test_kubernetes_and_ci_artifacts_are_present"
+    ],
+    "optional_verification": "Real Docker/kind cluster required"
+  },
+  {
+    "id": "NVD-12",
+    "requirement": "KWOK large-scale virtual node scheduling/failure",
+    "test_refs": [
+      "tests/test_advanced_extensions.py::test_kwok_snapshot_node_loss"
+    ],
+    "optional_verification": "Real isolated kwokctl cluster required"
+  },
+  {
+    "id": "NVD-13",
+    "requirement": "NeMo Guardrails integration",
+    "test_refs": [
+      "tests/test_nim_nemo_contracts.py::test_nemo_configuration_declares_rails",
+      "tests/test_nim_nemo_contracts.py::test_nemo_sdk_dispatch_with_fake_factory",
+      "tests/test_slo_reproduction_traceability.py::test_nemo_policy_scoped_heuristic_and_review_flag"
+    ],
+    "optional_verification": "Real NeMo SDK + Ollama required; policy efficacy unverified"
+  },
+  {
+    "id": "NVD-14",
+    "requirement": "accelerator GPU diagnostic and inference timing",
+    "test_refs": [
+      "tests/test_model_experiment.py::test_gpu_probe_without_gpu_cannot_claim_coverage"
+    ],
+    "optional_verification": "accelerator GPU host and correlated model-server GPU telemetry required"
+  },
+  {
+    "id": "NVD-15",
+    "requirement": "Measured improvements, independent model-vs-baseline experiment",
+    "test_refs": [
+      "tests/test_model_experiment.py::test_real_model_experiment_seam_injected_model",
+      "tests/test_runtime_verification.py::test_mutation_benchmark_detects_controlled_faults"
+    ],
+    "optional_verification": "Real-model comparative uplift not claimed without real-model experiment"
+  },
+  {
+    "id": "NVD-16",
+    "requirement": "Customer bug reproduction and fix verification",
+    "test_refs": [
+      "tests/test_slo_reproduction_traceability.py::test_synthetic_customer_bug_red_green",
+      "tests/test_slo_reproduction_traceability.py::test_synthetic_customer_bug_oracle_is_immutable"
+    ]
+  },
+  {
+    "id": "NVD-17",
+    "requirement": "Requirements review, test planning, traceability, quality/risks",
+    "test_refs": [
+      "tests/test_slo_reproduction_traceability.py::test_traceability_rejects_nonexistent_test"
+    ],
+    "optional_verification": "Real cross-functional stakeholder work cannot be demonstrated by a solo project"
+  },
+  {
+    "id": "NVD-18",
+    "requirement": "Unix/Linux, Python, shell, CI pipelines",
+    "test_refs": [
+      "tests/test_integration_audit.py::test_integrations_audit_cannot_mark_missing_runtime_as_verified"
+    ],
+    "optional_verification": "CI only verified after remote Actions run"
+  }
+]

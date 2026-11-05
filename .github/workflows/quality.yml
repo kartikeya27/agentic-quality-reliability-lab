@@ -1,0 +1,119 @@
+name: Quality gates
+on:
+  push:
+  pull_request:
+jobs:
+  offline-test:
+    name: deterministic agent QA (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install
+        run: python -m pip install -e '.[dev]'
+      - name: Unit and integration tests
+        env:
+          AQ_MODE: deterministic
+        run: mkdir -p artifacts && python -m pytest -q --cov=agent_quality_lab --cov-report=term-missing --junitxml=artifacts/pytest-results.xml
+      - name: Requirement-to-executed-test traceability gate
+        run: python -m agent_quality_lab traceability
+      - name: Synthetic customer issue reproduction and red-to-green fix check
+        run: python -m agent_quality_lab bug-cycle
+      - name: Actual local HTTP p95/p99/error-rate SLO gate
+        run: python scripts/verify_perf_slo.py
+      - name: Golden evaluation quality gate
+        env:
+          AQ_MODE: deterministic
+        run: python -m agent_quality_lab eval --min-pass-rate 1.0
+      - name: Fault injection quality gate
+        env:
+          AQ_MODE: deterministic
+        run: python -m agent_quality_lab chaos
+      - name: Advanced agent security and grounded-tool evaluation
+        env:
+          AQ_MODE: deterministic
+        run: python -m agent_quality_lab advanced --min-pass-rate 1.0
+      - name: NIM inference failure emulation gate
+        env:
+          AQ_MODE: deterministic
+        run: python -m agent_quality_lab inference-chaos
+      - name: Measured regression-suite comparison (non-gated)
+        env:
+          AQ_MODE: deterministic
+        run: python -m agent_quality_lab efficiency --budget 6
+      - name: Actual localhost HTTP application smoke test
+        run: python scripts/verify_api_http.py
+      - name: Real localhost HTTP adapter protocol tests (synthetic backend only)
+        run: python scripts/verify_backend_http_contract.py
+      - name: Seeded defect detection evidence
+        run: python -m agent_quality_lab mutation --budget 6
+      - name: Flaky cases and risk-tag coverage reporting
+        run: |
+          python -m agent_quality_lab flaky
+          python -m agent_quality_lab select --budget 6
+      - name: Offline guardrail fixtures and virtual-node scheduling (NOT NeMo/KWOK)
+        run: python scripts/verify_local_simulations.py
+      - name: Upload QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-evidence-py${{ matrix.python-version }}
+          path: artifacts/
+          if-no-files-found: ignore
+
+  docker-observability-smoke:
+    name: Real container + Prometheus + Grafana HTTP integration
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install verification dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Build and run actual services, verify scrape and dashboard provisioning
+        run: bash scripts/verify_docker_stack.sh
+      - name: Show container diagnostics on failure
+        if: failure()
+        run: docker compose ps && docker compose logs --tail=120
+      - name: Upload runtime verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-observability-evidence
+          path: artifacts/
+          if-no-files-found: ignore
+      - name: Shut down services
+        if: always()
+        run: docker compose down -v || true
+
+  kubernetes-kind-smoke:
+    name: Actual Kubernetes deployment (kind, two pods)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kind
+        run: |
+          curl -fsSL --retry 3 -o kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64
+          sudo install -m 0755 kind /usr/local/bin/kind
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.32.2
+      - name: Verify actual app rollout and service on isolated kind cluster
+        run: bash scripts/verify_k8s_kind.sh
+      - name: Upload kind Kubernetes evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kind-deployment-evidence
+          path: artifacts/k8s/
+          if-no-files-found: ignore

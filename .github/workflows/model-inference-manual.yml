@@ -1,0 +1,59 @@
+name: Live model inference (manual)
+on:
+  workflow_dispatch:
+    inputs:
+      backend:
+        description: Choose a real inference service
+        required: true
+        default: ollama
+        type: choice
+        options: [ollama, nim]
+      run_nemo:
+        description: Run NeMo SDK when using Ollama
+        required: true
+        default: false
+        type: boolean
+jobs:
+  live-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      AQ_MODEL: llama3.2:1b
+      AQ_NIM_BASE_URL: ${{ vars.AQ_NIM_BASE_URL }}
+      AQ_NIM_MODEL: ${{ vars.AQ_NIM_MODEL }}
+      AQ_NIM_AUTHORIZED: "1"
+      AQ_NIM_API_KEY: ${{ secrets.AQ_NIM_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - name: Install and start local Ollama
+        if: ${{ inputs.backend == 'ollama' }}
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama serve > /tmp/ollama.log 2>&1 &
+          sleep 4
+          ollama pull "$AQ_MODEL"
+      - name: Check live Ollama quality
+        if: ${{ inputs.backend == 'ollama' }}
+        run: make verify-ollama
+      - name: Check NeMo Guardrails SDK
+        if: ${{ inputs.backend == 'ollama' && inputs.run_nemo }}
+        run: |
+          python -m pip install -e '.[nemo]'
+          make verify-nemo
+      - name: Check authorized NIM runtime
+        if: ${{ inputs.backend == 'nim' }}
+        run: |
+          test -n "$AQ_NIM_API_KEY" || { echo 'Missing Actions secret AQ_NIM_API_KEY'; exit 1; }
+          test -n "$AQ_NIM_MODEL" || { echo 'Missing Actions variable AQ_NIM_MODEL'; exit 1; }
+          make verify-nim
+      - name: Upload observed evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-model-evidence
+          path: artifacts/
+          if-no-files-found: ignore

@@ -1,0 +1,22 @@
+# Optional NeMo Guardrails SDK demonstration. Requires running local Ollama.
+# No accelerator hardware or remote model is used by this configuration.
+models:
+  - type: main
+    engine: ollama
+    model: llama3.2:1b
+    parameters:
+      base_url: http://127.0.0.1:11434/v1
+      temperature: 0
+instructions:
+  - type: general
+    content: |
+      You are a read-only incident triage assistant.
+      You may suggest troubleshooting steps, but never execute commands,
+      reveal secrets, or claim to have changed system state.
+rails:
+  input:
+    flows:
+      - self check input
+  output:
+    flows:
+      - self check output

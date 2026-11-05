@@ -1,0 +1,5 @@
+{
+  "incident_id": "EXAMPLE-001",
+  "message": "Production down following new deployment",
+  "fault": "none"
+}
