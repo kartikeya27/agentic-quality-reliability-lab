@@ -26,6 +26,5 @@
 | Large-scale failure testing using KWOK / Chaos Monkey-like tooling | isolated `kwokctl` node-loss scheduler experiment | `make verify-kwok` verifies fake node/pod behavior, not real workload availability |
 | CUDA-compatible GPU or GPU-accelerated software | accelerator GPU diagnostic and process co-residency sampler | `make verify-gpu` on accelerator Linux host; impossible natively on M1/CUDA |
 | Reduced QA effort through AI | empty real-task capture CSV and paired report analyzer | No improvement claim until user records valid human task observations |
-| Communication, curiosity, cross-functional teamwork | design/review artifacts, issue template and demo script | Hiring evidence must come from real interviews, work history and collaboration |
 
 All platform statuses must be reproduced by **your runtime**; JSON reports ignored by Git are not magically carried in the ZIP. See [complete verification](COMPLETE_VERIFICATION.md), [Mac start guide](../START_HERE_MAC.md), [GPU runbook](GPU_HOST_RUNBOOK.md), and [human-effort protocol](EXPERIMENT_PROTOCOL.md).
