@@ -1,6 +1,6 @@
 # Agentic Quality & Reliability Lab
 
-**role-aligned independent demonstration. Reproducible QA engineering for AI agents:** agent/tool workflow validation, real local inference adapters, golden-set evaluation, failure injection, flaky-test diagnostics, risk-aware regression selection, HTTP load checks, Prometheus/Grafana observability, and GitHub Actions gates.
+**Reproducible engineering for AI agents:** agent/tool workflow validation, real local inference adapters, golden-set evaluation, failure injection, flaky-test diagnostics, risk-aware regression selection, HTTP load checks, Prometheus/Grafana observability, and GitHub Actions gates.
 
 > **Portfolio engineering demonstration** using synthetic incidents and read-only mock runbooks. Not an accelerator product, a GPU benchmark, a production system, or evidence of professional ownership of NeMo/NIM/GPU infrastructure. The optional OpenAI-compatible NIM adapter is an integration path, not an assertion it was executed.
 
@@ -248,7 +248,3 @@ Prometheus and Grafana are exposed only on `127.0.0.1` for this demo; Grafana's 
 - [AI agent requirements and test-evidence matrix](docs/AI_AGENT_REQUIREMENTS.md)
 - [Optional accelerator-host verification guide](docs/GPU_HOST_RUNBOOK.md)
 - [Measured QA productivity experiment](docs/EXPERIMENT_PROTOCOL.md)
-
-## License and attribution
-
-No license is included. Unless you add one, GitHub's default copyright rules apply; see GitHub's licensing documentation if you want to allow third-party reuse. Synthetic incident examples only; no private organization code, customer tickets, secrets, or production access.
